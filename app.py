@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, g, session
 from requester_module import send_request
 from datetime import datetime
-import pymysql
 import os
 
 
@@ -26,9 +25,6 @@ def before_request():
 @app.route('/signup')
 def sign():
 	 return render_template('signup.html')
-
-connection=pymysql.connect(host='localhost', user="root", password="", db="webapp1", charset='utf8mb4',
-							 cursorclass=pymysql.cursors.DictCursor)
  
 #----------------- signup -------------------------------
 @app.route('/signup', methods=['GET', 'POST'])
@@ -376,5 +372,5 @@ def addItem():
 
 
 if __name__ == "__main__":
-	app.run(debug=True)
+	app.run(debug=True, host = "0.0.0.0")
 
