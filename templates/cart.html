@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title></title>
+</head>
+<body>
+<div class="cart page">
+    <div class="form">
+        
+<form class="cart-form" method="POST">
+<style>
+ 
+ td {
+        width: 150px;
+        text-align: center;
+        border: 1px solid black;
+        padding: 5px;
+      }
+</style>
+<table>
+  <thead>
+    <tr>
+        <th>cart id</th>
+        <th>user id</th>
+        <th>product id</th>
+        <th>quantity</th>
+        <th> X </th>
+    </tr>
+    </thead>    
+    <tbody>
+     {%for row in data%}    
+            <tr>
+                <td>{{row['id']}}</td>
+                <td>{{row['username']}}</td>
+                <td>{{row['product_id']}}</td>
+                <td>{{row['quantity']}}</td>
+                <td><button type="submit" name='remove' value="{{row['id']}}">Remove</button></td>
+                <td><button type="submit" name='buy' value="{{row['id']}}">Buy</button></td>
+            </tr>
+    {%endfor%}
+    </tbody>
+</table>
+</form>
+</div>
+</div>
+</body>
+</html>

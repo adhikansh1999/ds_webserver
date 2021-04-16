@@ -136,51 +136,6 @@ def dropsession():
 	print("/dropsession")
 	return redirect(url_for('log'))
 
-#----------------display items in cart-----------------------
-@app.route('/cart', methods=['GET', 'POST'])
-def cart():
-	if('user' in g):
-		#print("-------",g.userid)
-		cursor = connection.cursor()
-		query = "SELECT * FROM carts WHERE `username`=%s"
-		cursor.execute(query,g.user)
-		data = cursor.fetchall()
-		if data==None:
-			error = 'cart is empty!'
-
-		if request.method == 'POST':
-			form_obj = request.form
-			#print(form_obj)
-			if 'remove' in form_obj:
-				cid = form_obj['remove']
-				cursor = connection.cursor()
-				query = "DELETE FROM carts WHERE `id`=%s"
-				cursor.execute(query,cid)		
-				connection.commit()
-			else:
-				cid = form_obj['buy']
-
-				cursor = connection.cursor()
-				query = "SELECT * FROM `products` WHERE `id` = %s"
-				cursor.execute(query,cid)
-				results_itr  = cursor.fetchall()
-				connection.commit()
-
-				for iterator in results_itr:
-					cursor2 = connection.cursor()
-					new_stmt = g.user + " wants to buy " + iterator['product_name'] + "with id = " + str(iterator['id'])
-					query2 = "INSERT INTO `notifications` (`username`, `content`, `timestamp`) VALUES ( %s, %s, CURRENT_TIMESTAMP) " 
-					cursor2.execute(query2, (iterator['username'],new_stmt) )
-					connection.commit()
-			
-
-
-		return render_template('cart.html', data=data)
-		
-	else:
-		return redirect('/login')
-
-
 
 # ---------------------feed after login----------------------
 @app.route('/feed', methods = ['GET','POST'])
