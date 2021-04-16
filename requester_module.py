@@ -12,7 +12,7 @@ HOST = [_.decode("utf-8").replace(" ", "").replace('\n', "") for _ in urllib.req
 total_node = len(HOST)
 
 
-def send_request(msg,count=0) :
+def send_request(msg,count=0):
     global index_lock
     global index
     if count==total_node :
