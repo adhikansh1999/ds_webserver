@@ -6,9 +6,6 @@ import os
 
 app = Flask(__name__)
 
-# format
-
-# response = send_request(msg)
 
 
 app.secret_key=os.urandom(23564)
@@ -30,8 +27,6 @@ def sign():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
    
-	# cursor = connection.cursor()     
-	
 	#user is the array that stores the data received from the form
 	if request.method == 'POST':
 		user = request.form
@@ -65,7 +60,6 @@ def signup():
 					except:
 						return render_template('alert.html')
 
-					# connection.close()    
 					return redirect(url_for('login'))
 		elif(acc_type == "seller"):
 			if username:
@@ -229,10 +223,6 @@ def cart():
 				# results_itr  = cursor.fetchall()
 				# connection.commit()
 
-
-
-
-
 				############################################## update the notifications db
 				# for iterator in results_itr:
 				# 	cursor2 = connection.cursor()
@@ -298,7 +288,6 @@ def feed():
 			if request.form['btn'] == 'addNew':
 				return redirect(url_for('addItem'))
 
-			cursor = connection.cursor()
 
 			# neeed to add this to the cart
 			username = g.user
@@ -346,7 +335,6 @@ def feed():
 @app.route('/addItem', methods = ['GET','POST'])
 def addItem():
 
-	# cursor = connection.cursor()     
 
 	if request.method == 'POST':
 		ad = request.form
@@ -356,12 +344,6 @@ def addItem():
 		price = int(ad['price'])
 		quantity = int(ad['quantity'])
 
-		# query="INSERT INTO `products` (`username`, `product_type`, `product_name`, `price`, `quantity`, `timestamp`) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
-		# cursor.execute(query, (username, product_type, product_name, price, quantity))
-		# connection.commit() 
-
-
-		
 		query = {"type":"write", "method":"add_product", "username":username, "product_type":product_type, "product_name":product_name, "price":price, "quantity":quantity}
 		add_item_ack = send_request(query)		
 
