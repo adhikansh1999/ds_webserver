@@ -30,7 +30,7 @@ def sign():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
    
-	cursor = connection.cursor()     
+	# cursor = connection.cursor()     
 	
 	#user is the array that stores the data received from the form
 	if request.method == 'POST':
@@ -346,7 +346,7 @@ def feed():
 @app.route('/addItem', methods = ['GET','POST'])
 def addItem():
 
-	cursor = connection.cursor()     
+	# cursor = connection.cursor()     
 
 	if request.method == 'POST':
 		ad = request.form
