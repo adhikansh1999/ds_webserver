@@ -114,8 +114,6 @@ def login():
 			query = {"type":"read", "method":"login_seller", "username":user_input}
 		myresult = send_request(query)	
 		
-
-
 		if myresult["password"] == None:
 			error = 'Invalid username or password. Please try again!'
 				
