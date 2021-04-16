@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your feed</title>
+	<style type="text/css">
+		body{
+			font-family: 'Helvetica', sans-serif;
+		}
+		.wrap1{
+			position: absolute;
+		}
+		.itemimages{
+			width: 300px;
+			height: auto;
+			position: relative;
+		}
+		.itemdisplay{
+			height: auto;
+			width: 300px;
+			display: inline-block;
+			vertical-align: top;
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			margin: 140px auto 30px ;
+			transition: 0.3s;
+		}
+		.itemdisplay:hover{
+			box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
+		}
+		ul{
+			list-style-type: none;
+		}
+		.itemdisplay ul li{
+			padding-top: 5px;
+		}
+		.details{
+			position: relative;
+			text-align: left;
+			bottom: 0px;
+			text-transform: uppercase;
+		}
+		.title{			
+			font-weight: 700;
+			font-size: 22px;
+			color: white;
+		}
+		button{
+			border: none;
+			background: transparent;
+			text-transform: uppercase;
+			cursor: pointer;
+		}
+		.form {
+			position: relative;
+			left: 30%;
+			top: 100%;
+			z-index: 1;
+			background: #FFFFFF;
+			max-width: 360px;
+			margin: 0 auto 100px;
+			padding: 45px;
+			text-align: center;
+			box-shadow: 0 0 1000px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+		}
+		.form input, .form select {
+			font-family: "Roboto", sans-serif;
+			outline: 0;
+			background: #f2f2f2;
+			width: 100%;
+			border: 0;
+			margin: 0 0 15px;
+			padding: 15px;
+			box-sizing: border-box;
+			font-size: 14px;
+		}
+		button {
+			font-family: "Roboto", sans-serif;
+			text-transform: uppercase;
+			outline: 0;
+			background: #4CAF50;
+			width: 100%;
+			border: 0;
+			padding: 15px;
+			color: #FFFFFF;
+			font-size: 14px;
+			margin: 0 auto;
+			-webkit-transition: all 0.3 ease;
+			transition: all 0.3 ease;
+			cursor: pointer;
+		}
+		button:hover,button:active,button:focus {
+			background: #43A047;
+		}			
+	</style>
+</head>
+<body>
+	{% if error %}
+			<p>{{ error }}</p>
+    {% endif %}
+	<form method="POST" action="http://localhost:5000/notification">
+	<div class="wrap1">
+	{%for i in result%}
+		<div class="itemdisplay">
+			<!-- <img src="{{url_for('static', filename=i['item_type'])}}.jpg" class="itemimages"> -->
+			<div class="details">
+				<ul>
+					<li class="title"><button type="submit" name="btn" value="{{i['username']}}" class="title">send message</button></li>
+					<li>&#x20b9 {{i['price']}}</li>
+				<li>By {{i['username']}}</li>
+				<li>{{i['time']}}</li>
+				<li>{{i['date']}}</li>
+				<li>
+				 <h3>{{i['src']}} to {{i['dest']}}	</h3>
+				</li>
+				</ul>
+			</div>
+				
+		</div>
+	{%endfor%}
+	</div>
+</body>
+</html>

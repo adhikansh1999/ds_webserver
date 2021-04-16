@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Your feed</title>
+	<style type="text/css">
+		body{
+			font-family: 'Helvetica', sans-serif;
+		}
+		.wrap1{
+			position: absolute;
+		}
+		.itemimages{
+			width: 300px;
+			height: auto;
+			position: relative;
+		}
+		.itemdisplay{
+			height: auto;
+			width: 300px;
+			display: inline-block;
+			vertical-align: top;
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			margin: 30px;
+			margin-top: 100px;
+			transition: 0.3s;
+		}
+		.itemdisplay:hover{
+			box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
+		}
+		ul{
+			list-style-type: none;
+		}
+		.itemdisplay ul li{
+			padding-top: 5px;
+		}
+		.details{
+			position: relative;
+			text-align: left;
+			bottom: 0px;
+			text-transform: uppercase;
+		}
+		.title{			
+			font-weight: 700;
+			font-size: 22px;
+			color: white;
+		}
+		button{
+			border: none;
+			background: transparent;
+			text-transform: uppercase;
+			cursor: pointer;
+		}
+		.form {
+			position: relative;
+			left: 30%;
+			top: 100%;
+			z-index: 1;
+			background: #FFFFFF;
+			max-width: 360px;
+			margin: 0 auto 100px;
+			padding: 45px;
+			text-align: center;
+			box-shadow: 0 0 1000px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+		}
+		.form input, .form select {
+			font-family: "Roboto", sans-serif;
+			outline: 0;
+			background: #f2f2f2;
+			width: 100%;
+			border: 0;
+			margin: 0 0 15px;
+			padding: 15px;
+			box-sizing: border-box;
+			font-size: 14px;
+		}
+		button{
+			font-family: "Roboto", sans-serif;
+			text-transform: uppercase;
+			outline: 0;
+			background: #4CAF50;
+			width: 100%;
+			border: 0;
+			padding: 15px;
+			color: #FFFFFF;
+			font-size: 14px;
+			-webkit-transition: all 0.3 ease;
+			transition: all 0.3 ease;
+			cursor: pointer;
+		}
+		button:hover,button:active,button:focus {
+			background: #43A047;
+		}
+		.link {
+			font-family: "Roboto", sans-serif;
+			text-transform: uppercase;
+			outline: 0;
+			background: #4CAF50;
+			width: 100%;
+			border: 0;
+			padding: 15px;
+			color: #FFFFFF;
+			font-size: 14px;
+			-webkit-transition: all 0.3 ease;
+			transition: all 0.3 ease;
+			cursor: pointer;
+			}
+		.link :hover,.link :active,.link:focus {
+			background: #43A047;
+		}
+		table {
+			  border-collapse: collapse;
+			  width: 30%;
+			}
+
+			th, td {
+			  text-align: left;
+			  padding: 8px;
+			}
+
+			tr:nth-child(even){background-color: #f2f2f2}
+
+			th {
+			  background-color: #4CAF50;
+			  color: white;
+			}
+			.topnav {
+			  overflow: hidden;
+			  background-color: #e9e9e9;
+			}
+
+			.topnav a {
+			  float: left;
+			  display: block;
+			  color: black;
+			  text-align: center;
+			  padding: 14px 16px;
+			  text-decoration: none;
+			  font-size: 17px;
+			}
+
+			.topnav a:hover {
+			  background-color: #ddd;
+			  color: black;
+			}
+
+			.topnav a.active {
+			  background-color: #2196F3;
+			  color: white;
+			}
+
+			.topnav .search-container {
+			  float: right;
+			}
+
+			.topnav input[type=text] {
+			  padding: 6px;
+			  margin-top: 8px;
+			  font-size: 17px;
+			  border: none;
+			}
+
+			.topnav .search-container button {
+			  float: right;
+			  padding: 6px;
+			  margin-top: 8px;
+			  margin-right: 16px;
+			  background: #ddd;
+			  font-size: 17px;
+			  border: none;
+			  cursor: pointer;
+			}
+
+			.topnav .search-container button:hover {
+			  background: #ccc;
+			}
+
+			@media screen and (max-width: 600px) {
+			  .topnav .search-container {
+			    float: none;
+			  }
+			  .topnav a, .topnav input[type=text], .topnav .search-container button {
+			    float: none;
+			    display: block;
+			    text-align: left;
+			    width: 100%;
+			    margin: 0;
+			    padding: 14px;
+			  }
+			  .topnav input[type=text] {
+			    border: 1px solid #ccc;  
+			  }
+			}	
+	</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a class="active" href="{{ url_for('feed') }}">Home</a>
+  <a href="#about">Cart</a>
+  <a href="{{ url_for('dropsession') }}">Log Out</a>
+  {%if session['acc_type'] == 'seller' %}
+  <a href="{{ url_for('addItem') }}">Sell New Product</a>
+  {%endif%}
+  <div class="search-container">
+
+    <form method="POST">
+		<!-- <br/><h2>WHAT ARE YOU LOOKING FOR?<br>(select cab sharing to go to cabsharing page)</h2> -->
+		<select name = "product_type" placeholder ="Search" > 
+			<option value="furniture">furniture</option>
+			<option value="book">book</option>
+			<option value="electronic">electronic</option>
+			<option value="cab">cab</option>
+		</select>
+		<button type="submit" name ="btn" value="search">SEARCH</button>.
+	</form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+	<form method="POST">
+	<div class="wrap1">
+	{%for i in result%}
+		{%if i['quantity'] > 0 %}
+			<div class="itemdisplay">
+				<img src="{{i['product_type']}}.jpg" class="itemimages">
+				<div class="details">
+					<ul>
+						<!-- this should be product id ???? -->
+						<li class="title"><button type="submit" name="btn" value="{{i['id']}}" class="title">Add to Cart </button></li>
+						<li>Name: {{i['product_name']}}</li>
+						<li>{{i['product_type']}}</li>
+						<li>&#x20b9 {{i['price']}}</li>
+					<!-- <li>{{ i['phone'] }}</li> -->
+					<li>
+					
+					</li>
+					</ul>
+				</div>
+			</div>
+		{%else%}
+			<div class="itemdisplay">
+				<img src="{{i['product_type']}}.jpg" class="itemimages">
+				<div class="details">
+					<ul>
+						<!-- this should be product id ???? -->
+						<li ><button type="button" name="btn" value="{{i['id']}}" class="title">(out of stock)</button></li>
+						<li>Name: {{i['product_name']}}</li>
+						<li>{{i['product_type']}}</li>
+						<li>&#x20b9 {{i['price']}}</li>
+					<!-- <li>{{ i['phone'] }}</li> -->
+					<li>
+					
+					</li>
+					</ul>
+				</div>
+			</div>
+
+		{%endif%}
+	{%endfor%}
+			
+		<div position: "relative" width = "300px" height = "auto"  display = "inline-block" margin = "40px">
+
+	</div>	
+
+	</div>
+	</form>
+	</div>
+	
+
+	<div class="form">
+		<table border = 1>
+		<tr><h3>NOTIFICATIONS</h3> </tr>
+		{% for j in notifications %}
+		<tr>
+			<td><h3>{{ 	j['content'] }}</h3></td>
+		</tr>
+		{% endfor %}
+		</table>
+		
+	</div>
+	
+
+</body>
+</html>
