@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <script>
+      var messages = {{ messages | safe }};
+      for (var i=0; i<messages.length; i++) {
+        alert(messages[i]);
+      }
+    </script>
+  {% endif %}
+{% endwith %}
+
 	<title>Your feed</title>
 	<style type="text/css">
 		body{
@@ -196,11 +208,13 @@
 
 <div class="topnav">
   <a class="active" href="{{ url_for('feed') }}">Home</a>
-  <a href="#about">Cart</a>
+  	{%if session['acc_type'] == 'buyer' %}
+	  <a href="{{ url_for('cart') }}">Cart</a>
+	  {%endif%}
+	  {%if session['acc_type'] == 'seller' %}
+	  <a  href="{{ url_for('addItem') }}">Sell New Product</a>
+	  {%endif%}
   <a href="{{ url_for('dropsession') }}">Log Out</a>
-  {%if session['acc_type'] == 'seller' %}
-  <a href="{{ url_for('addItem') }}">Sell New Product</a>
-  {%endif%}
   <div class="search-container">
 
     <form method="POST">
@@ -226,17 +240,17 @@
 
 	<form method="POST">
 	<div class="wrap1">
-	{%for i in result%}
-		{%if i['quantity'] > 0 %}
+	{%for i in range(result['quantity']|length) %}
+		{%if result['quantity'][i] > 0 %}
 			<div class="itemdisplay">
-				<img src="{{i['product_type']}}.jpg" class="itemimages">
+				<img src="{{result['product_type'][i]}}.jpg" class="itemimages">
 				<div class="details">
 					<ul>
 						<!-- this should be product id ???? -->
-						<li class="title"><button type="submit" name="btn" value="{{i['id']}}" class="title">Add to Cart </button></li>
-						<li>Name: {{i['product_name']}}</li>
-						<li>{{i['product_type']}}</li>
-						<li>&#x20b9 {{i['price']}}</li>
+						<li class="title"><button type="submit" name="btn" value="{{result['id'][i]}}" class="title">Add to Cart </button></li>
+						<li>Name: {{result['product_name'][i]}}</li>
+						<li>{{result['product_type'][i]}}</li>
+						<li>&#x20b9 {{result['price'][i]}}</li>
 					<!-- <li>{{ i['phone'] }}</li> -->
 					<li>
 					
@@ -246,14 +260,14 @@
 			</div>
 		{%else%}
 			<div class="itemdisplay">
-				<img src="{{i['product_type']}}.jpg" class="itemimages">
+				<img src="{{result['product_type'][i]}}.jpg" class="itemimages">
 				<div class="details">
 					<ul>
 						<!-- this should be product id ???? -->
-						<li ><button type="button" name="btn" value="{{i['id']}}" class="title">(out of stock)</button></li>
-						<li>Name: {{i['product_name']}}</li>
-						<li>{{i['product_type']}}</li>
-						<li>&#x20b9 {{i['price']}}</li>
+						<li ><button type="button" name="btn" value="{{result['id'][i]}}" class="title">(out of stock)</button></li>
+						<li>Name: {{result['product_name'][i]}}</li>
+						<li>{{result['product_type'][i]}}</li>
+						<li>&#x20b9 {{result['price'][i]}}</li>
 					<li>
 					
 					</li>

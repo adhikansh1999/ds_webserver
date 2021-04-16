@@ -174,8 +174,10 @@ body
 
 	<div class="topnav">
 	  <a  href="{{ url_for('feed') }}">Home</a>
-	  <a href="#about">Cart</a>
 	  <a href="{{ url_for('dropsession') }}">Log Out</a>
+	  {%if session['acc_type'] == 'buyer' %}
+	  <a href="{{ url_for('cart') }}">Cart</a>
+	  {%endif%}
 	  {%if session['acc_type'] == 'seller' %}
 	  <a class="active" href="{{ url_for('addItem') }}">Sell New Product</a>
 	  {%endif%}

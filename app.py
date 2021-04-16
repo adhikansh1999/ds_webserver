@@ -18,7 +18,7 @@ app.secret_key=os.urandom(23564)
 #of request is made to the compiler
 @app.before_request
 def before_request():
-	print("before_request")
+	# print("before_request")
 	g.pop('user',None)
 	if 'user' in session:
 		g.user = session['user']
@@ -118,10 +118,10 @@ def login():
 		# cursor = connection.cursor()
 		if(acc_type == 'buyer'): 
 			# cursor.execute("SELECT password FROM buyers WHERE username=%s", user_input)
-			query = {"type":"read", "method":"login_buyer", "username":username}
+			query = {"type":"read", "method":"login_buyer", "username":user_input}
 		if(acc_type == 'seller'): 
 			# cursor.execute("SELECT password FROM sellers WHERE username=%s", user_input)
-			query = {"type":"read", "method":"login_seller", "username":username}
+			query = {"type":"read", "method":"login_seller", "username":user_input}
 		myresult = send_request(query)	
 		
 
@@ -168,7 +168,9 @@ def cart():
 		# data = cursor.fetchall()
 		
 		query = {"type":"read", "method":"view_cart", "username":g.user}
-		data = send_request(query)		
+		data = send_request(query)
+
+		print("-----------------------------------------------------",data)		
 
 		if len(data["product_id"]) == 0:
 			error = 'cart is empty!'
@@ -185,6 +187,8 @@ def cart():
 				
 				query = {"type":"write", "method":"update_quantity", "product_id":cid, "new_quantity":0, "username":g.user}
 				delete_cart_ack = send_request(query)
+				flash('item removed from cart!!')
+				return(redirect(url_for('cart')))
 
 			else:
 
@@ -193,13 +197,13 @@ def cart():
 				query = {"type":"write", "method":"checkout", "product_id":cid, "username":g.user}
 
 				ret = send_request(query)
-
-				if(ret["error"] != ""):
-					flash('item_succesfully bought!!')
-					return redirect(url_for(cart))
+				print("buy response" , ret)	
+				if(ret["error"] == ""):
+					flash('item succesfully bought!!')
+					return redirect(url_for('cart'))
 				else:
 					flash('sorry, Item out of stock')
-					return redirect(url_for(cart))
+					return redirect(url_for('cart'))
 				
 				# ret = {"ack":True, "error":""}
 				# cursor = connection.cursor()
@@ -243,6 +247,8 @@ def feed():
 		query = {"type":"read", "method":"view_all_products"}
 		result = send_request(query)
 
+		print("------------------------------------------------------",result)
+		print("all quantities used are ",result['quantity'])
 
 		####################################### NOTIFICATIONS
 		# cursor2 = connection.cursor()
@@ -250,8 +256,6 @@ def feed():
 		# cursor2.execute(query2,g.user)
 		# connection.commit()
 		notifications ={}
-
-
 
 
 		# search for the type of item you want to buy
@@ -309,7 +313,7 @@ def feed():
 			# 	cursor2.execute(query2, (iterator['username'],new_stmt) )
 			# 	connection.commit()
 
-
+			flash('product added to cart!!')
 			return redirect(url_for('feed'))
 
 
@@ -334,10 +338,12 @@ def addItem():
 		# query="INSERT INTO `products` (`username`, `product_type`, `product_name`, `price`, `quantity`, `timestamp`) VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
 		# cursor.execute(query, (username, product_type, product_name, price, quantity))
 		# connection.commit() 
+
+
 		
 		query = {"type":"write", "method":"add_product", "username":username, "product_type":product_type, "product_name":product_name, "price":price, "quantity":quantity}
-
 		add_item_ack = send_request(query)		
+
 		print(add_item_ack)
 		return redirect(url_for('feed'))	
 
