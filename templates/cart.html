@@ -20,7 +20,7 @@
 <table>
   <thead>
     <tr>
-        <th>cart id</th>
+        <!-- <th>cartid</th> -->
         <th>user id</th>
         <th>product id</th>
         <th>quantity</th>
@@ -30,12 +30,15 @@
     <tbody>
      {%for row in data%}    
             <tr>
-                <td>{{row['id']}}</td>
+                <!-- <td>{{row['id']}}</td> -->
                 <td>{{row['username']}}</td>
                 <td>{{row['product_id']}}</td>
                 <td>{{row['quantity']}}</td>
-                <td><button type="submit" name='remove' value="{{row['id']}}">Remove</button></td>
-                <td><button type="submit" name='buy' value="{{row['id']}}">Buy</button></td>
+                <td><button type="submit" name='remove' value="{{row['product_id']}}">Remove</button></td>
+
+
+                <!-- do this later -->
+                <td><button type="submit" name='buy' value="{{row['product_id']}}">Buy</button></td>
             </tr>
     {%endfor%}
     </tbody>
