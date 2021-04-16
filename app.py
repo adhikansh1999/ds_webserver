@@ -190,7 +190,7 @@ def cart():
 				flash('item removed from cart!!')
 				return(redirect(url_for('cart')))
 
-			else:
+			elif 'buy' in form_obj:
 
 				cid = form_obj['buy']
 				
@@ -204,7 +204,28 @@ def cart():
 				else:
 					flash('sorry, Item out of stock')
 					return redirect(url_for('cart'))
-				
+
+			elif 'add_quant' in form_obj:
+				cid = form_obj['add_quant']
+				quantity = form_obj['quantity' + str(cid)]
+				print("----------- quantity = ", quantity)
+
+				if len(quantity)>0:
+					qint = int(quantity)
+					
+					query = {"type":"write", "method":"update_quantity", "product_id":cid, "new_quantity":qint, "username":g.user}
+					update_cart_ack = send_request(query)
+					print("------------",update_cart_ack)
+					if(update_cart_ack["error"] == ""):
+						flash('item quantity succesfully updated!!')
+						return redirect(url_for('cart'))
+					else:
+						flash('sorry, {} items not available'.format(qint))
+						return redirect(url_for('cart'))
+				else:
+					pass
+				return redirect(url_for('cart'))
+
 				# ret = {"ack":True, "error":""}
 				# cursor = connection.cursor()
 				# query = "SELECT * FROM `products` WHERE `id` = %s"
@@ -297,7 +318,11 @@ def feed():
 			add_to_cart_ack = send_request(query)
 			print(add_to_cart_ack)
 
-
+			if(add_to_cart_ack["error"] == ""):
+				flash('product added to cart!!')
+			else:
+				flash('sorry, more items not available')
+				
 
 			# the notification table
 			# cursor = connection.cursor()
@@ -313,7 +338,7 @@ def feed():
 			# 	cursor2.execute(query2, (iterator['username'],new_stmt) )
 			# 	connection.commit()
 
-			flash('product added to cart!!')
+			
 			return redirect(url_for('feed'))
 
 

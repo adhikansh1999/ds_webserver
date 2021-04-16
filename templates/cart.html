@@ -132,7 +132,10 @@
         <th>product name</th>
         <th>product id</th>
         <th>quantity</th>
-        <th> X </th>
+        <th>  </th>
+        <th>  </th>
+        <th> Update Quantity </th>
+        <th>  </th>
     </tr>
     </thead>    
     <tbody>
@@ -142,9 +145,12 @@
                 <td>{{data['name'][i]       }}</td>
                 <td>{{data['product_id'][i] }}</td>
                 <td>{{data['quantity'][i]   }}</td>
-                <td><button type="submit" name='remove' value="{{data['product_id'][i]  }}">Remove</button></td>
+                <td><button type="submit" name='remove' value="{{data['product_id'][i]}}">Remove</button></td>
 
                 <td><button type="submit" name='buy' value="{{data['product_id'][i] }}">Buy</button></td>
+                <td><input type="text" name="{{ 'quantity' ~ data['product_id'][i]   }}" pr></td>
+                <td><button type="submit" name='add_quant' value="{{data['product_id'][i]}}">update</button></td>
+                
             </tr>
     {%endfor%}
     </tbody>
